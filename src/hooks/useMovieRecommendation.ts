@@ -48,7 +48,7 @@ export function useMovieRecommendation() {
 
     try {
       const result = await getRecommendation(selectedMovies);
-      const additionalResults = await getMultipleRecommendations(selectedMovies, 5);
+      const additionalResults = await getMultipleRecommendations(selectedMovies, 10);
 
       if (!result) {
         setError('No recommendations found. Try selecting different movies.');
@@ -57,7 +57,7 @@ export function useMovieRecommendation() {
         setRecommendation(result);
       }
       if (additionalResults.length > 1) {
-        setAdditionalRecommendations(additionalResults)
+        setAdditionalRecommendations(additionalResults.filter(r => r.movie.id !== result?.movie.id));
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred';

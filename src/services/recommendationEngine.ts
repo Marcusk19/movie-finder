@@ -27,12 +27,12 @@ async function findCandidateMovies(inputMovies: Movie[]): Promise<Movie[]> {
 
   // Search by genres (primary search)
   const genreSearchPromises = genres.slice(0, 3).map(genre =>
-    searchMoviesByGenre(genre, 1).catch(() => ({ page: 1, results: [], total_pages: 0, total_results: 0 }))
+    searchMoviesByGenre(genre, 5).catch(() => ({ page: 1, results: [], total_pages: 0, total_results: 0 }))
   );
 
   // Search by directors (secondary search)
   const directorSearchPromises = directors.slice(0, 2).map(director =>
-    searchMoviesByGenre(director, 1).catch(() => ({ page: 1, results: [], total_pages: 0, total_results: 0 }))
+    searchMoviesByGenre(director, 5).catch(() => ({ page: 1, results: [], total_pages: 0, total_results: 0 }))
   );
 
   // Execute all searches in parallel
