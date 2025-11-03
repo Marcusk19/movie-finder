@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Movie, RecommendationResult } from '../utils/types';
 import { getRecommendation } from '../services/recommendationEngine';
+import { getMultipleRecommendations } from '../services/recommendationEngine';
 
 export function useMovieRecommendation() {
   const [selectedMovies, setSelectedMovies] = useState<Movie[]>([]);
   const [recommendation, setRecommendation] = useState<RecommendationResult | null>(null);
+  const [additionalRecommendations, setAdditionalRecommendations] = useState<RecommendationResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,12 +48,16 @@ export function useMovieRecommendation() {
 
     try {
       const result = await getRecommendation(selectedMovies);
+      const additionalResults = await getMultipleRecommendations(selectedMovies, 5);
 
       if (!result) {
         setError('No recommendations found. Try selecting different movies.');
         setRecommendation(null);
       } else {
         setRecommendation(result);
+      }
+      if (additionalResults.length > 1) {
+        setAdditionalRecommendations(additionalResults)
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred';
@@ -72,6 +78,7 @@ export function useMovieRecommendation() {
   return {
     selectedMovies,
     recommendation,
+    additionalRecommendations,
     isLoading,
     error,
     addMovie,

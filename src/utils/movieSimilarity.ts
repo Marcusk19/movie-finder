@@ -31,7 +31,6 @@ export function yearSimilarity(year1: number, year2: number): number {
 
   // Perfect match if within 5 years
   if (difference <= 5) return 1.0;
-
   // Linear decay over 50 years
   const similarity = Math.max(0, 1 - (difference / 50));
   return similarity;

@@ -8,6 +8,7 @@ function App() {
   const {
     selectedMovies,
     recommendation,
+    additionalRecommendations,
     isLoading,
     error,
     addMovie,
@@ -33,7 +34,23 @@ function App() {
 
         {/* Show recommendation if available */}
         {recommendation ? (
-          <RecommendationResultComponent result={recommendation} onReset={reset} />
+          <>
+            <RecommendationResultComponent result={recommendation} onReset={reset} />
+
+            {/* Additional Recommendations */}
+            {additionalRecommendations.length > 0 && (
+              <div className="mt-12 max-w-6xl mx-auto">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                  More Movies You Might Like
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {additionalRecommendations.map((rec) => (
+                    <MovieCard key={rec.movie.id} movie={rec.movie} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <>
             {/* Instructions */}
@@ -123,6 +140,7 @@ function App() {
             )}
           </>
         )}
+
 
         {/* Footer */}
         <footer className="mt-16 text-center text-gray-600 dark:text-gray-400">
