@@ -19,23 +19,29 @@ export default function MovieCard({ movie, onRemove, showRemoveButton = false }:
         </button>
       )}
 
-      <div className="relative w-full aspect-[2/3] bg-gray-200 dark:bg-gray-700">
-        {movie.poster && movie.poster !== 'N/A' ? (
-          <img
-            src={movie.poster}
-            alt={`${movie.title} poster`}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = 'https://via.placeholder.com/300x450?text=No+Poster';
-            }}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400">
-            <span className="text-center px-4">No Poster Available</span>
+      <a
+        href={`https://www.imdb.com/title/${movie.id}/`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+          <div className="relative w-full aspect-[2/3] bg-gray-200 dark:bg-gray-700">
+            {movie.poster && movie.poster !== 'N/A' ? (
+              <img
+                src={movie.poster}
+                alt={`${movie.title} poster`}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'https://via.placeholder.com/300x450?text=No+Poster';
+                }}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-gray-400">
+                <span className="text-center px-4">No Poster Available</span>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+      </a>
 
       <div className="p-4">
         <h3 className="font-bold text-lg text-gray-900 dark:text-white line-clamp-2">
