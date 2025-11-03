@@ -147,16 +147,13 @@ function App() {
           <p className="mb-2">
             Powered by{' '}
             <a
-              href="http://www.omdbapi.com/"
+              href="https://developer.themoviedb.org/docs/getting-started"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary-600 dark:text-primary-400 hover:underline"
             >
-              OMDb API
+              TMDB API
             </a>
-          </p>
-          <p className="text-sm">
-            Don't forget to add your API key to the .env file!
           </p>
         </footer>
       </div>
