@@ -1,5 +1,5 @@
 import { Movie, RecommendationResult } from '../utils/types';
-import { searchMoviesByGenre, getMovieDetails, convertOmdbToMovie } from './omdbApi';
+import { searchMoviesByGenre, getMovieDetails, convertTmdbToMovie } from './tmdbApi';
 import { calculateAverageSimilarity, generateExplanation } from '../utils/movieSimilarity';
 
 /**
@@ -27,37 +27,38 @@ async function findCandidateMovies(inputMovies: Movie[]): Promise<Movie[]> {
 
   // Search by genres (primary search)
   const genreSearchPromises = genres.slice(0, 3).map(genre =>
-    searchMoviesByGenre(genre, 1).catch(() => ({ Search: [], totalResults: '0', Response: 'False' }))
+    searchMoviesByGenre(genre, 1).catch(() => ({ page: 1, results: [], total_pages: 0, total_results: 0 }))
   );
 
   // Search by directors (secondary search)
   const directorSearchPromises = directors.slice(0, 2).map(director =>
-    searchMoviesByGenre(director, 1).catch(() => ({ Search: [], totalResults: '0', Response: 'False' }))
+    searchMoviesByGenre(director, 1).catch(() => ({ page: 1, results: [], total_pages: 0, total_results: 0 }))
   );
 
   // Execute all searches in parallel
   const searchResults = await Promise.all([...genreSearchPromises, ...directorSearchPromises]);
 
-  // Collect all unique IMDb IDs
-  const imdbIds = new Set<string>();
+  // Collect all unique movie IDs
+  const movieIds = new Set<number>();
   searchResults.forEach(result => {
-    if (result.Search) {
-      result.Search.forEach(movie => {
-        // Exclude input movies
-        if (!inputMovies.some(inputMovie => inputMovie.id === movie.imdbID)) {
-          imdbIds.add(movie.imdbID);
+    if (result.results) {
+      result.results.forEach(movie => {
+        // Exclude input movies (compare by both TMDB ID and IMDb ID if available)
+        const movieIdStr = movie.id.toString();
+        if (!inputMovies.some(inputMovie => inputMovie.id === movieIdStr || inputMovie.id === movie.id.toString())) {
+          movieIds.add(movie.id);
         }
       });
     }
   });
 
   // Limit to 50 candidates to avoid API rate limits
-  const candidateIds = Array.from(imdbIds).slice(0, 50);
+  const candidateIds = Array.from(movieIds).slice(0, 50);
 
   // Fetch detailed information for candidates
   const candidateDetailsPromises = candidateIds.map(id =>
     getMovieDetails(id)
-      .then(convertOmdbToMovie)
+      .then(convertTmdbToMovie)
       .catch(() => null) // Ignore failed requests
   );
 

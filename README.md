@@ -1,6 +1,6 @@
 # 🎬 Movie Finder
 
-A smart movie recommendation web app that suggests movies based on your favorite films. Built with React, TypeScript, Tailwind CSS, and powered by the OMDb API.
+A smart movie recommendation web app that suggests movies based on your favorite films. Built with React, TypeScript, Tailwind CSS, and powered by the TMDB API.
 
 ## ✨ Features
 
@@ -20,7 +20,7 @@ A smart movie recommendation web app that suggests movies based on your favorite
 
 - Node.js (v18 or higher)
 - npm or yarn
-- OMDb API Key (free at [http://www.omdbapi.com/apikey.aspx](http://www.omdbapi.com/apikey.aspx))
+- TMDB API Key (free at [https://www.themoviedb.org/settings/api](https://www.themoviedb.org/settings/api))
 
 ### Installation
 
@@ -36,9 +36,9 @@ A smart movie recommendation web app that suggests movies based on your favorite
 
 3. **Set up your API key**
 
-   Open the `.env` file and replace `your_api_key_here` with your actual OMDb API key:
+   Open the `.env` file and replace `your_api_key_here` with your actual TMDB API Read Access Token:
    ```env
-   VITE_OMDB_API_KEY=your_actual_api_key
+   VITE_TMDB_API_KEY=your_actual_api_key
    ```
 
 4. **Start the development server**
@@ -69,7 +69,7 @@ movie-finder/
 │   │   ├── RecommendationResult.tsx
 │   │   └── LoadingSpinner.tsx
 │   ├── services/           # API and business logic
-│   │   ├── omdbApi.ts
+│   │   ├── tmdbApi.ts
 │   │   └── recommendationEngine.ts
 │   ├── utils/              # Utilities and types
 │   │   ├── movieSimilarity.ts
@@ -105,7 +105,6 @@ Total Score = (Genre × 0.4) + (Director × 0.25) + (Actors × 0.2) + (Year × 0
 
 ### Future Enhancements (Planned)
 
-- TMDb API integration for richer metadata
 - Plot analysis using TF-IDF
 - Collaborative filtering with user ratings
 - Machine learning models
@@ -116,7 +115,7 @@ Total Score = (Genre × 0.4) + (Director × 0.25) + (Actors × 0.2) + (Year × 0
 - **[React 18](https://react.dev/)** - UI library
 - **[TypeScript](https://www.typescriptlang.org/)** - Type safety
 - **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
-- **[OMDb API](http://www.omdbapi.com/)** - Movie database
+- **[TMDB API](https://www.themoviedb.org/)** - Movie database
 
 ## 📝 Available Scripts
 
@@ -127,12 +126,12 @@ Total Score = (Genre × 0.4) + (Director × 0.25) + (Actors × 0.2) + (Year × 0
 
 ## 🔑 API Key Setup
 
-To get your free OMDb API key:
+To get your free TMDB API key:
 
-1. Visit [http://www.omdbapi.com/apikey.aspx](http://www.omdbapi.com/apikey.aspx)
-2. Select the FREE tier (1,000 daily requests)
-3. Enter your email and verify
-4. Copy your API key
+1. Visit [https://www.themoviedb.org/signup](https://www.themoviedb.org/signup) and create an account
+2. Go to [https://www.themoviedb.org/settings/api](https://www.themoviedb.org/settings/api)
+3. Request an API key and fill out the form
+4. Copy your **API Read Access Token** (not the API Key)
 5. Paste it in the `.env` file
 
 ## 🎨 Features Breakdown
@@ -157,12 +156,12 @@ To get your free OMDb API key:
 
 ### "No movies found" error
 - Check that your API key is correctly set in `.env`
-- Verify the API key is active (check your email for activation)
-- Ensure you haven't exceeded the daily rate limit (1,000 requests/day for free tier)
+- Verify you're using the **API Read Access Token** (not the API Key v3)
+- Ensure you haven't exceeded the daily rate limit
 
 ### Movies not loading
 - Check your internet connection
-- Verify the OMDb API is accessible from your location
+- Verify the TMDB API is accessible from your location
 - Check browser console for specific error messages
 
 ### Build errors
@@ -176,7 +175,7 @@ This project is open source and available for educational purposes.
 
 ## 🙏 Acknowledgments
 
-- Movie data provided by [OMDb API](http://www.omdbapi.com/)
+- Movie data provided by [TMDB API](https://www.themoviedb.org/)
 - Icons and design inspired by modern movie streaming platforms
 
 ## 🚀 Future Enhancements

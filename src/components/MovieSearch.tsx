@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { searchMovies, getMovieDetails, convertOmdbToMovie } from '../services/omdbApi';
+import { searchMovies, getMovieDetails, convertTmdbToMovie } from '../services/tmdbApi';
 import { Movie } from '../utils/types';
 
 interface MovieSearchProps {
@@ -9,7 +9,7 @@ interface MovieSearchProps {
 
 export default function MovieSearch({ onMovieSelect, disabled = false }: MovieSearchProps) {
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<Array<{ id: string; title: string; year: string }>>([]);
+  const [suggestions, setSuggestions] = useState<Array<{ id: number; title: string; year: string }>>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -35,12 +35,12 @@ export default function MovieSearch({ onMovieSelect, disabled = false }: MovieSe
       setIsSearching(true);
       try {
         const results = await searchMovies(query);
-        if (results.Response === 'True' && results.Search) {
+        if (results.results && results.results.length > 0) {
           setSuggestions(
-            results.Search.slice(0, 8).map((movie) => ({
-              id: movie.imdbID,
-              title: movie.Title,
-              year: movie.Year,
+            results.results.slice(0, 8).map((movie) => ({
+              id: movie.id,
+              title: movie.title,
+              year: movie.release_date ? movie.release_date.split('-')[0] : 'N/A',
             }))
           );
           setShowSuggestions(true);
@@ -58,10 +58,10 @@ export default function MovieSearch({ onMovieSelect, disabled = false }: MovieSe
     return () => clearTimeout(delayDebounce);
   }, [query]);
 
-  const handleSelectMovie = async (imdbId: string) => {
+  const handleSelectMovie = async (movieId: number) => {
     try {
-      const movieDetails = await getMovieDetails(imdbId);
-      const movie = convertOmdbToMovie(movieDetails);
+      const movieDetails = await getMovieDetails(movieId);
+      const movie = convertTmdbToMovie(movieDetails);
       onMovieSelect(movie);
       setQuery('');
       setSuggestions([]);
