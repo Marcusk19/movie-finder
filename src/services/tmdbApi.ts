@@ -35,7 +35,7 @@ const GENRE_MAP: Record<string, number> = {
 /**
  * Make authenticated request to TMDB API
  */
-async function tmdbFetch(endpoint: string): Promise<any> {
+async function tmdbFetch<T>(endpoint: string): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     headers: {
       'Authorization': `Bearer ${API_KEY}`,
@@ -47,7 +47,8 @@ async function tmdbFetch(endpoint: string): Promise<any> {
     throw new Error(`TMDB API error: ${response.status} ${response.statusText}`);
   }
 
-  return response.json();
+  const data: unknown = await response.json();
+  return data as T;
 }
 
 /**
@@ -64,7 +65,7 @@ export async function searchMovies(query: string): Promise<TmdbSearchResponse> {
   }
 
   try {
-    const data = await tmdbFetch(`/search/movie?query=${encodeURIComponent(query)}`);
+    const data = await tmdbFetch<TmdbSearchResponse>(`/search/movie?query=${encodeURIComponent(query)}`);
     return data;
   } catch (error) {
     console.error('Error searching movies:', error);
@@ -77,7 +78,7 @@ export async function searchMovies(query: string): Promise<TmdbSearchResponse> {
  */
 export async function getMovieDetails(movieId: number | string): Promise<TmdbMovie> {
   try {
-    const data = await tmdbFetch(`/movie/${movieId}?append_to_response=credits`);
+    const data = await tmdbFetch<TmdbMovie>(`/movie/${movieId}?append_to_response=credits`);
     return data;
   } catch (error) {
     console.error('Error fetching movie details:', error);
@@ -138,11 +139,11 @@ export async function searchMoviesByGenre(genre: string, page: number = 1): Prom
 
     if (genreId) {
       // Use discover endpoint with genre filter
-      const data = await tmdbFetch(`/discover/movie?with_genres=${genreId}&page=${page}&sort_by=popularity.desc`);
+      const data = await tmdbFetch<TmdbSearchResponse>(`/discover/movie?with_genres=${genreId}&page=${page}&sort_by=popularity.desc`);
       return data;
     } else {
       // Fall back to search by keyword if genre not in our map
-      const data = await tmdbFetch(`/search/movie?query=${encodeURIComponent(genre)}&page=${page}`);
+      const data = await tmdbFetch<TmdbSearchResponse>(`/search/movie?query=${encodeURIComponent(genre)}&page=${page}`);
       return data;
     }
   } catch (error) {
