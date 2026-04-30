@@ -19,7 +19,7 @@ A smart movie recommendation web app that suggests movies based on your favorite
 ### Prerequisites
 
 - Node.js (v18 or higher)
-- npm or yarn
+- pnpm
 - TMDB API Key (free at [https://www.themoviedb.org/settings/api](https://www.themoviedb.org/settings/api))
 
 ### Installation
@@ -31,7 +31,7 @@ A smart movie recommendation web app that suggests movies based on your favorite
 
 2. **Install dependencies**
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Set up your API key**
@@ -43,7 +43,7 @@ A smart movie recommendation web app that suggests movies based on your favorite
 
 4. **Start the development server**
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 5. **Open your browser**
@@ -119,10 +119,10 @@ Total Score = (Genre × 0.4) + (Director × 0.25) + (Actors × 0.2) + (Year × 0
 
 ## 📝 Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+- `pnpm run dev` - Start development server
+- `pnpm run build` - Build for production
+- `pnpm run preview` - Preview production build
+- `pnpm run lint` - Run ESLint
 
 ## 🔑 API Key Setup
 
@@ -165,7 +165,7 @@ To get your free TMDB API key:
 - Check browser console for specific error messages
 
 ### Build errors
-- Delete `node_modules` and run `npm install` again
+- Delete `node_modules` and run `pnpm install` again
 - Ensure you're using Node.js v18 or higher
 - Check that all dependencies installed successfully
 
